@@ -41,6 +41,7 @@ namespace CardManagementAPI
                 options.SecretKey = Configuration["AES:SecretKey"];
             });
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IServices, Services>();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
