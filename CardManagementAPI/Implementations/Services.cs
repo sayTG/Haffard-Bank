@@ -70,6 +70,7 @@ namespace CardManagementAPI.Implementations
                 FirstName = customerDTO.FirstName,
                 LastName = customerDTO.LastName
             };
+            _context.Add(customer);
             _unit.SaveToDB();
         }
         private Task<string> Encrypt(int pin)
@@ -121,7 +122,7 @@ namespace CardManagementAPI.Implementations
         }
         private int GenerateRandomNo()
         {
-            int _min = 0000;
+            int _min = 1000;
             int _max = 9999;
             Random _rdm = new Random();
             return _rdm.Next(_min, _max);
