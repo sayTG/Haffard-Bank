@@ -12,5 +12,6 @@ namespace CardManagementAPI.Models
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Pin { get; set; }
+        public bool Status { get; set; }
     }
 }

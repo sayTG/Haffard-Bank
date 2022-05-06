@@ -2,6 +2,7 @@
 using CardManagementAPI.EntityConfiguration;
 using CardManagementAPI.Models;
 using CardManagementAPI.Models._ConfigurationModels;
+using CardManagementAPI.Models.EntityDTOs;
 using Microsoft.Extensions.Options;
 using System;
 using System.IO;
@@ -27,15 +28,49 @@ namespace CardManagementAPI.Implementations
             Customers customer = _unit.Customers.GetCustomer(customerId);
             if (customer == null)
                 return null;
-            if (string.IsNullOrEmpty(customer.Pin))
+
+            int newPin = GenerateRandomNo();
+            customer.Pin = await Encrypt(newPin);
+            _unit.SaveToDB();
+            return newPin;
+        }
+        public async Task<string> ActivateCardAsync(CardDTO cardDTO)
+        {
+            Customers customer = _unit.Customers.GetCustomer(cardDTO.CustomerID);
+            if (customer == null)
+                return null;
+            if (customer.Status)
+                return "Already Activated";
+            int dbPin = await Decrypt(customer.Pin);
+            if (dbPin != cardDTO.Pin)
+                return "Incorrect Pin";
+            customer.Status = true;
+            _unit.SaveToDB();
+            return "Successfully Activated";
+        }
+        public async Task<string> DeactivateCardAsync(CardDTO cardDTO)
+        {
+            Customers customer = _unit.Customers.GetCustomer(cardDTO.CustomerID);
+            if (customer == null)
+                return null;
+            if (!customer.Status)
+                return "Already Deactivated";
+            int dbPin = await Decrypt(customer.Pin);
+            if (dbPin != cardDTO.Pin)
+                return "Incorrect Pin";
+            customer.Status = false;
+            _unit.SaveToDB();
+            return "Successfully Deactivated";
+        }
+        public void AddCustomer(CustomerDTO customerDTO)
+        {
+            Customers customer = new Customers
             {
-                int newPin = GenerateRandomNo();
-                customer.Pin = await Encrypt(newPin);
-                _unit.SaveToDB();
-                return newPin;
-            }
-            else
-                return await Decrypt(customer.Pin);
+                CustomerId = Guid.NewGuid().ToString(),
+                FirstName = customerDTO.FirstName,
+                LastName = customerDTO.LastName
+            };
+            _unit.SaveToDB();
         }
         private Task<string> Encrypt(int pin)
         {
@@ -86,7 +121,7 @@ namespace CardManagementAPI.Implementations
         }
         private int GenerateRandomNo()
         {
-            int _min = 1000;
+            int _min = 0000;
             int _max = 9999;
             Random _rdm = new Random();
             return _rdm.Next(_min, _max);
