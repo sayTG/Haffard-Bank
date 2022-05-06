@@ -1,7 +1,12 @@
+using CardManagementAPI.Abstractions;
+using CardManagementAPI.EntityConfiguration;
+using CardManagementAPI.Implementations;
+using CardManagementAPI.Models._ConfigurationModels;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -26,6 +31,16 @@ namespace CardManagementAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<AppDbContext>(options =>
+                options.UseSqlite(
+                    Configuration.GetConnectionString("DefaultConnection")));
+
+            services.Configure<AESConfiguration>(options =>
+            {
+                options.PublicKey = Configuration["AES:PublicKey"];
+                options.SecretKey = Configuration["AES:SecretKey"];
+            });
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
