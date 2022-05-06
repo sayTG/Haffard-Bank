@@ -120,7 +120,7 @@ namespace CardManagementAPI.Implementations
                 throw new Exception(ex.Message, ex.InnerException);
             }
         }
-        private int GenerateRandomNo()
+        private static int GenerateRandomNo()
         {
             int _min = 1000;
             int _max = 9999;
