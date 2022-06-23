@@ -26,9 +26,6 @@ namespace CardManagementAPI.Implementations
         public async Task<int?> GeneratePinAsync(string customerId)
         {
             Customers customer = _unit.Customers.GetCustomer(customerId);
-            if (customer == null)
-                return null;
-
             int newPin = GenerateRandomNo();
             customer.Pin = await Encrypt(newPin);
             _unit.SaveToDB();
@@ -37,8 +34,6 @@ namespace CardManagementAPI.Implementations
         public async Task<string> ActivateCardAsync(CardDTO cardDTO)
         {
             Customers customer = _unit.Customers.GetCustomer(cardDTO.CustomerID);
-            if (customer == null)
-                return null;
             if (customer.Status)
                 return "Already Activated";
             int dbPin = await Decrypt(customer.Pin);
@@ -51,8 +46,6 @@ namespace CardManagementAPI.Implementations
         public async Task<string> DeactivateCardAsync(CardDTO cardDTO)
         {
             Customers customer = _unit.Customers.GetCustomer(cardDTO.CustomerID);
-            if (customer == null)
-                return null;
             if (!customer.Status)
                 return "Already Deactivated";
             int dbPin = await Decrypt(customer.Pin);

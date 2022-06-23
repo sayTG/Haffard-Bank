@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "pXbIuW3QyQlt1r/9PJyHKV+lTgXqIBBu0k+91XDVOTKiPNvV3/dQFnx3p+EaVa9iT45bDNyuv7EKaqiEeVYrLw==",
+  "dgSpecHash": "GOaERhVflVGNP0z0FIdj73d4KAzdjVBPhH+hA5BPq347DXmirLqhfRTRZyI/H7nvwsAI37MYGG6Vj0xAC80KYA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Administrator\\Downloads\\sayTG\\Haffard Bank\\CardManagementAPI\\CardManagementAPI.csproj",
+  "projectFilePath": "E:\\sayTG\\sayTG\\Haffard Bank\\CardManagementAPI\\CardManagementAPI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Administrator\\.nuget\\packages\\entityframework\\6.4.4\\entityframework.6.4.4.nupkg.sha512",
     "C:\\Users\\Administrator\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
