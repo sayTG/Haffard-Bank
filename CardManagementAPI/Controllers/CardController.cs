@@ -26,6 +26,8 @@ namespace CardManagementAPI.Controllers
             if (string.IsNullOrEmpty(CustomerId))
                 return BadRequest("Customer ID cannot be null");
             int? result = await _service.GeneratePinAsync(CustomerId);
+            if (result == null)
+                return NotFound("Customer not found");
             return Ok(result);
         }
         [HttpPost("activate")]
@@ -34,6 +36,8 @@ namespace CardManagementAPI.Controllers
             if (!ModelState.IsValid)
                 return BadRequest("Please fill the required fields");
             string result = await _service.ActivateCardAsync(cardDTO);
+            if (result == null)
+                return NotFound("Customer not found");
             return Ok(result);
         }
         [HttpPost("deactivate")]
@@ -42,6 +46,8 @@ namespace CardManagementAPI.Controllers
             if (!ModelState.IsValid)
                 return BadRequest("Please fill the required fields");
             string result = await _service.DeactivateCardAsync(cardDTO);
+            if (result == null)
+                return NotFound("Customer not found");
             return Ok(result);
         }
         [HttpPost("addusers")]
